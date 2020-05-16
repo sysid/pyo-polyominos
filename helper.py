@@ -7,7 +7,7 @@ from typing import Dict, Any, Tuple
 import numpy as np
 import matplotlib.pyplot as plt
 
-from twimage import Point, heatmap, matrix2dict
+from twimage import Point, heatmap, matrix2dict, get_shape
 
 import settings
 
@@ -34,7 +34,7 @@ class Ok(object):
 
         self.dimension = config['dimension']
         self.blocks = config['blocks']
-        self.block_shapes = config['block_shapes']
+        # self.block_shapes = config['block_shapes']
 
         self.ok = defaultdict(lambda: 0)
         self.create_ok()
@@ -42,10 +42,11 @@ class Ok(object):
     def create_ok(self) -> None:
         for k, block in self.blocks.items():
             for i in range(1, self.dimension + 1):
-                if self.block_shapes[k][0] > self.dimension + 1 - i:
+                n, m = get_shape(block)
+                if n > self.dimension + 1 - i:
                     continue
                 for j in range(1, self.dimension + 1):
-                    if self.block_shapes[k][1] > self.dimension + 1 - j:
+                    if m > self.dimension + 1 - j:
                         continue
                     self.ok[k, i, j] = 1
         _ = None
@@ -65,7 +66,7 @@ class Cover(object):
 
         self.dimension = config['dimension']
         self.blocks = config['blocks']
-        self.block_shapes = config['block_shapes']
+        # self.block_shapes = config['block_shapes']
 
         self.cover = defaultdict(lambda: 0)
         self.create_cover()

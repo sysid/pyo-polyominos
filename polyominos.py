@@ -27,7 +27,7 @@ class Polyominos(BaseModel):
 
         self.dimension = config['dimension']
         self.blocks = config['blocks']
-        self.block_shapes = config['block_shapes']
+        # self.block_shapes = config['block_shapes']
 
         ################################################################################
         # Sets
