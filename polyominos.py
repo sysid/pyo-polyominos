@@ -4,7 +4,7 @@ import numpy as np
 from pprint import pprint
 
 from pyomo.environ import *
-from twimage import dict2matrix, add2canvas, Point, heatmap
+from twimage import dict2matrix, add2canvas, Point, heatmap, rotate_dict
 
 import settings
 from BaseModel import BaseModel
@@ -36,6 +36,7 @@ class Polyominos(BaseModel):
         model.K = Set(initialize=self.blocks.keys())
         model.I = RangeSet(self.dimension)
         model.J = RangeSet(self.dimension)
+        model.R = Set(initialize=[0, 1, 2, 3])
         model.ok = Set(initialize=self.ok.keys())
         model.cover = Set(initialize=self.cover.keys())
 
@@ -47,7 +48,7 @@ class Polyominos(BaseModel):
         # Var
         ################################################################################
 
-        model.x = Var(model.K, model.I, model.J, domain=Boolean, initialize=0,
+        model.x = Var(model.K, model.R, model.I, model.J, domain=Boolean, initialize=0,
                       doc='if we place polyomino k at location (i,j')
 
         # slack variable
@@ -60,7 +61,7 @@ class Polyominos(BaseModel):
 
         def overlap_c(model, iii, jjj):
             return sum(
-                model.x[k, i, j] for (k, i, j, ii, jj) in model.cover if ii == iii and jj == jjj
+                model.x[k, r, i, j] for (k, r, i, j, ii, jj) in model.cover if ii == iii and jj == jjj
             ) == model.y[iii, jjj]
 
         model.overlap_c = Constraint(model.I, model.J, rule=overlap_c)
@@ -86,10 +87,11 @@ class Polyominos(BaseModel):
             return
         blocks = [x for x in self.result['x'] if self.result['x'][x] > 0.7]
         canvas = np.zeros((self.dimension, self.dimension))
-        for (k, i, j) in blocks:
+        for (k, r, i, j) in blocks:
             block = self.blocks[k]
-            m = dict2matrix(block) * k
-            _log.debug(f"Adding block {k} at {Point(i - 1, j - 1)}")
+            rblock = rotate_dict(block, k=r)
+            m = dict2matrix(rblock) * k
+            _log.debug(f"Adding block {k} rotation: {r} at {Point(i - 1, j - 1)}")
             canvas = add2canvas(canvas, m, Point(i - 1, j - 1), debug=debug)
 
         _log.info(f"Creating heatmap plot.")
@@ -111,4 +113,4 @@ if __name__ == "__main__":
     m.save_model()
     m.save_result()
     m.show()
-    m.plot(debug=False)
+    m.plot(debug=True)

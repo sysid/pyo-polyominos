@@ -7,7 +7,7 @@ from typing import Dict, Any, Tuple
 import numpy as np
 import matplotlib.pyplot as plt
 
-from twimage import Point, heatmap, matrix2dict, get_shape
+from twimage import Point, heatmap, matrix2dict, get_shape, rotate_dict
 
 import settings
 
@@ -35,20 +35,23 @@ class Ok(object):
         self.dimension = config['dimension']
         self.blocks = config['blocks']
         # self.block_shapes = config['block_shapes']
+        self.block_symmetry = config['block_symmetry']
 
         self.ok = defaultdict(lambda: 0)
         self.create_ok()
 
     def create_ok(self) -> None:
         for k, block in self.blocks.items():
-            for i in range(1, self.dimension + 1):
-                n, m = get_shape(block)
-                if n > self.dimension + 1 - i:
-                    continue
-                for j in range(1, self.dimension + 1):
-                    if m > self.dimension + 1 - j:
+            for r in range(self.block_symmetry[k]):
+                rblock = rotate_dict(block, k=r)
+                n, m = get_shape(rblock)
+                for i in range(1, self.dimension + 1):
+                    if n > self.dimension + 1 - i:
                         continue
-                    self.ok[k, i, j] = 1
+                    for j in range(1, self.dimension + 1):
+                        if m > self.dimension + 1 - j:
+                            continue
+                        self.ok[k, r, i, j] = 1
         _ = None
         _log.info(f"Oks created: {len(self.ok)}")
 
@@ -67,17 +70,19 @@ class Cover(object):
         self.dimension = config['dimension']
         self.blocks = config['blocks']
         # self.block_shapes = config['block_shapes']
+        # self.block_symmetry = config['block_symmetry']
 
         self.cover = defaultdict(lambda: 0)
         self.create_cover()
 
     def create_cover(self) -> None:
-        for (k, i, j) in self.ok:
+        for (k, r, i, j) in self.ok:
             block = self.blocks[k]
-            for (ii, jj), v in block.items():
+            rblock = rotate_dict(block, k=r)
+            for (ii, jj), v in rblock.items():
                 if v == 0:
                     continue
-                self.cover[k, i, j, i + ii, j + jj] = 1
+                self.cover[k, r, i, j, i + ii, j + jj] = 1
         _log.info(f"Covers created: {len(self.cover)}")
 
 
