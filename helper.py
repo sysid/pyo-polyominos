@@ -15,12 +15,27 @@ _log = logging.getLogger(__name__)
 
 
 def create_blocks():
-    # create dicts for blocks
-    block = np.ones((3, 2))
-    block[0, 0] = 0
-    block[2, 1] = 0
+    # block = np.ones((3, 3))
+    # block[0, 0] = 0
+    # block[2, 1] = 0
+    # block = np.array(
+    #     [
+    #         [1, 1, 0],
+    #         [0, 1, 1],
+    #         [0, 1, 0],
+    #     ]
+    # )
+    block = np.array(
+        [
+            [1, 0],
+            [1, 0],
+            [1, 1],
+            [0, 1],
+        ]
+    )
     print(matrix2dict(block))
     plt.imshow(block)
+    plt.show()
 
 
 class Ok(object):
@@ -86,8 +101,8 @@ if __name__ == '__main__':
     logging.basicConfig(format=log_fmt, level=logging.DEBUG)
     logging.getLogger('matplotlib').setLevel(logging.INFO)
 
-    # create_blocks()
+    create_blocks()
 
-    name = 'test'
-    # ok = Ok(config=getattr(settings, name))
-    cover = Cover(config=getattr(settings, name))
+    # name = 'test'
+    # # ok = Ok(config=getattr(settings, name))
+    # cover = Cover(config=getattr(settings, name))

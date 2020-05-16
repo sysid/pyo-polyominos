@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+import sys
+import os
+sys.path.insert(0, './common')
+
 import logging
 import numpy as np
 from pprint import pprint
@@ -103,6 +107,7 @@ if __name__ == "__main__":
     print(f"{'Polyominos':.^80}")
 
     name = 'test'
+    # name = 'standard'
     config = getattr(settings, name)
 
     m = Polyominos(name=name, config=config)
