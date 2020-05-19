@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import os
+
 sys.path.insert(0, './common')
 
 import logging
@@ -106,8 +107,8 @@ if __name__ == "__main__":
     logging.getLogger('matplotlib').setLevel(logging.INFO)
     print(f"{'Polyominos':.^80}")
 
-    name = 'test'
-    # name = 'standard'
+    # name = 'test'
+    name = 'standard'
     config = getattr(settings, name)
 
     m = Polyominos(name=name, config=config)
