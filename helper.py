@@ -93,6 +93,7 @@ if __name__ == '__main__':
 
     # create_blocks()
 
-    name = 'test'
+    # name = 'test'
+    name = 'd_27x27'
     # ok = Ok(config=getattr(settings, name))
     cover = Cover(config=getattr(settings, name))

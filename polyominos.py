@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+import sys
+import os
+
+sys.path.insert(0, './common')
+
 import logging
 import numpy as np
 from pprint import pprint
@@ -104,8 +109,13 @@ if __name__ == "__main__":
     logging.getLogger('matplotlib').setLevel(logging.INFO)
     print(f"{'Polyominos':.^80}")
 
-    name = 'test'
+    # name = 'test'
+    # name = 'd_27x27'  # cancel after 24h
+    # name = 'd_19x19'  # cancle after 10h
+    name = 'd_13x13'  # cancle after 10h
     config = getattr(settings, name)
+
+    _log.info(f"Running with dim: {config['dimension']}.")
 
     m = Polyominos(name=name, config=config)
     m.save_model()
