@@ -33,7 +33,7 @@ class BaseModel(object):
             self.instance.pprint(output_file)
 
     def solve(self, tee: bool = False, *args, **kwargs):
-        _log.info(f"Sovling with tee: {tee}, kwargs: {kwargs}")
+        _log.info(f"Solving with tee: {tee}, kwargs: {kwargs}")
         start_time = time.time()
 
         result = self.opt.solve(self.instance, tee=tee, **kwargs)
