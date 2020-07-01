@@ -6,15 +6,15 @@ from typing import Iterable
 
 import dill
 from pyomo.core import value, Var, Any, ConcreteModel
-from pyomo.opt import SolverStatus, TerminationCondition, SolverFactory
+from pyomo.opt import SolverStatus, TerminationCondition, SolverFactory, SolverManagerFactory
 
 _log = logging.getLogger(__name__)
 
 
 class BaseModel(object):
     # opt = SolverFactory("glpk")
-    opt = SolverFactory("cbc")
-    opt.options["threads"] = 6
+    # opt = SolverFactory("cbc")
+    # opt.options["threads"] = 6
 
     def __init__(self, name: str) -> None:
 
@@ -36,7 +36,9 @@ class BaseModel(object):
         _log.info(f"Solving with tee: {tee}, kwargs: {kwargs}")
         start_time = time.time()
 
-        result = self.opt.solve(self.instance, tee=tee, **kwargs)
+        solver_manager = SolverManagerFactory('neos')
+        result = solver_manager.solve(self.instance, opt='cplex')
+        # result = self.opt.solve(self.instance, tee=tee, **kwargs)
         self.objective = value(self.instance.objective)
 
         # self.instance.display()

@@ -2,6 +2,8 @@
 import sys
 import os
 
+from common.BaseModel import BaseModel
+
 sys.path.insert(0, './common')
 
 import logging
@@ -12,7 +14,6 @@ from pyomo.environ import *
 from twimage import dict2matrix, add2canvas, Point, heatmap
 
 import settings
-from BaseModel import BaseModel
 from helper import Cover
 
 _log = logging.getLogger(__name__)
@@ -107,14 +108,14 @@ if __name__ == "__main__":
     logging.getLogger('matplotlib').setLevel(logging.INFO)
     print(f"{'Polyominos':.^80}")
 
-    # name = 'test'
-    name = 'standard'
+    name = 'test'
+    # name = 'standard'
     config = getattr(settings, name)
 
     m = Polyominos(name=name, config=config)
     m.save_model()
     m.solve(tee=False)
     m.save_model()
-    m.save_result()
+    # m.save_result()
     m.show()
     m.plot(debug=False)
