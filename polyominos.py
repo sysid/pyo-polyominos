@@ -109,10 +109,12 @@ if __name__ == "__main__":
     logging.getLogger('matplotlib').setLevel(logging.INFO)
     print(f"{'Polyominos':.^80}")
 
-    # name = 'test'
+    name = 'test'
     # name = 'd_27x27'  # cancel after 24h
     # name = 'd_19x19'  # cancle after 10h
-    name = 'd_13x13'  # cancle after 10h
+    # name = 'd_13x13'  # cancle after 10h
+    # name = 'd_11x11'  # cancle after 10h
+    # name = 'd_9x9'  # cancle after 10h
     config = getattr(settings, name)
 
     _log.info(f"Running with dim: {config['dimension']}.")
