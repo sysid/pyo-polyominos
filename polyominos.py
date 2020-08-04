@@ -107,14 +107,14 @@ if __name__ == "__main__":
     logging.getLogger('matplotlib').setLevel(logging.INFO)
     print(f"{'Polyominos':.^80}")
 
-    # name = 'test'
-    name = 'standard'
+    name = 'test'
+    # name = 'standard'
     config = getattr(settings, name)
 
     m = Polyominos(name=name, config=config)
     m.save_model()
     m.solve(tee=False)
     m.save_model()
-    m.save_result()
+    # m.save_result()  # TODO: TypeError: cannot pickle 'dict_keys' object (defaultdict??)
     m.show()
     m.plot(debug=False)
